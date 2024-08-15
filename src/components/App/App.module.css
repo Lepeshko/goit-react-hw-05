@@ -1,0 +1,45 @@
+body {
+    margin: 0;
+    /* Усуває відступи з body */
+}
+
+.container {
+    display: flex;
+    gap: 12px;
+    background-color: rgb(0, 0, 0);
+    height: 60px;
+    align-items: center;
+    width: 100vw;
+    /* Ширина на всю ширину вікна перегляду */
+    position: fixed;
+    /* Фіксоване позиціонування */
+    top: 0;
+    /* Прикріплює до верхньої частини екрану */
+    left: 0;
+    /* Задає контейнеру ширину на всю сторінку */
+    transform: translateY(0);
+    /* Немає зміщення по вертикалі */
+    box-sizing: border-box;
+    /* Включає падінги і обвідки в ширину і висоту */
+    z-index: 1000;
+    /* Задає високу ієрархію, щоб бути поверх інших елементів */
+}
+
+.home {
+    margin-left: 12px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.home:hover {
+    color: rgb(159, 159, 159);
+}
+
+.movies {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.movies:hover {
+    color: rgb(159, 159, 159);
+}
