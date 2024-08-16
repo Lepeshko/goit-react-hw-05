@@ -1,4 +1,4 @@
-import { startTransition, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 import { fetchMovieByQuery } from "../../apiServise/apiServise";
 import MovieList from "../../components/MovieList/MovieList";
@@ -33,13 +33,11 @@ export default function MoviesPage() {
 
       try {
         const data = await fetchMovieByQuery(searchQuery, page);
-        startTransition(() => {
-          setSearchedMovies((prev) =>
-            page === 1 ? data.results : [...prev, ...data.results]
-          );
-          setIsVisible(data.results.length > 0);
-          setStatus(data.results.length > 0 ? "success" : "rejected");
-        });
+        setSearchedMovies((prev) =>
+          page === 1 ? data.results : [...prev, ...data.results]
+        );
+        setIsVisible(data.results.length > 0);
+        setStatus(data.results.length > 0 ? "success" : "rejected");
       } catch (error) {
         setError(true);
       } finally {

@@ -1,16 +1,18 @@
-import { Link, useLocation, useParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useParams,
+  useOutletContext,
+} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { fetchMovieReviews } from "../../apiServise/apiServise";
 import css from "./MovieReviews.module.css";
 
-export default function Reviews() {
-  const [reviewsList, setReviewsList] = useState([]);
+export default function MovieReviews() {
   const { movieId } = useParams();
+  const [reviewsList, setReviewsList] = useState([]);
   const location = useLocation();
-
-  const BackLink = ({ to, children }) => {
-    return <Link to={to}>{children}</Link>;
-  };
+  const { selectedMovie } = useOutletContext(); // Отримуємо дані через context
 
   useEffect(() => {
     const fetchReview = async () => {
@@ -27,10 +29,9 @@ export default function Reviews() {
   return (
     <div className={css.container_list_reviews}>
       <div>
-        <BackLink to={location.state?.from ?? `/movies/${movieId}`}>
-          Go back
-        </BackLink>
+        <Link to={location.state?.from ?? `/movies/${movieId}`}>Go back</Link>
       </div>
+      <h2>{selectedMovie?.title} - Reviews</h2>
       <ul className={css.list}>
         {reviewsList.length > 0
           ? reviewsList.map(({ author, content, id }) => (

@@ -9,20 +9,20 @@ import {
 import { fetchMovieDetails } from "../../apiServise/apiServise";
 import css from "./MovieDetailsPage.module.css";
 
-export default function MovieDatailsPage() {
+export default function MovieDetailsPage() {
   const { movieId } = useParams();
   const location = useLocation();
   const defaultImg =
     "https://dummyimage.com/400x600/cdcdcd/000.jpg&text=No+poster";
   const backLink = useRef(location.state?.from ?? "/movies");
   const [selectedMovie, setSelectedMovie] = useState(
-    location.state?.movie ?? ""
+    location.state?.movie || null
   );
 
   useEffect(() => {
     async function fetchDetails() {
       try {
-        const { data } = await fetchMovieDetails(movieId);
+        const data = await fetchMovieDetails(movieId);
         setSelectedMovie(data);
       } catch (error) {
         alert("Error fetching movie details");
@@ -34,9 +34,21 @@ export default function MovieDatailsPage() {
     }
   }, [movieId, selectedMovie]);
 
+  if (!selectedMovie) {
+    return <p>Loading...</p>;
+  }
+
+  // Функція для отримання правильного URL для кнопки Go back
+  const getBackLink = () => {
+    if (location.state?.from) {
+      return location.state.from;
+    }
+    return "/movies";
+  };
+
   return (
     <div className={css.container_movie_details_page}>
-      <Link to={backLink.current}>Go back</Link>
+      <Link to={getBackLink()}>Go back</Link>
       <div className={css.link}>
         <div>
           <img
@@ -58,14 +70,18 @@ export default function MovieDatailsPage() {
       </div>
       <div className={css.txtContainer}>
         <nav>
-          <NavLink className={css.cast} to="cast">
+          <NavLink className={css.cast} to="cast" state={{ from: location }}>
             Cast
           </NavLink>
-          <NavLink className={css.reviews} to="reviews">
+          <NavLink
+            className={css.reviews}
+            to="reviews"
+            state={{ from: location }}
+          >
             Reviews
           </NavLink>
         </nav>
-        <Outlet />
+        <Outlet context={{ selectedMovie }} />{" "}
       </div>
     </div>
   );

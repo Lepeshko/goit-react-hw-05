@@ -1,21 +1,20 @@
-import { Link, useLocation, useParams } from "react-router-dom";
-import { fetchMovieCast } from "../../apiServise/apiServise";
+import {
+  Link,
+  useLocation,
+  useParams,
+  useOutletContext,
+} from "react-router-dom";
 import { useEffect, useState } from "react";
+import { fetchMovieCast } from "../../apiServise/apiServise";
 import css from "./MovieCast.module.css";
 
 export default function MovieCast() {
   const { movieId } = useParams();
   const [cast, setCast] = useState([]);
   const location = useLocation();
+  const { selectedMovie } = useOutletContext(); // Отримуємо дані через context
   const defaultImg =
     "https://dummyimage.com/400x600/cdcdcd/000.jpg&text=No+poster";
-  const BackLink = ({ to, children, ...props }) => {
-    return (
-      <Link to={to} {...props}>
-        {children}
-      </Link>
-    );
-  };
 
   useEffect(() => {
     async function fetchCast() {
@@ -31,10 +30,8 @@ export default function MovieCast() {
 
   return (
     <div className={css.container_list_cast}>
-      <BackLink to={location.state?.from ?? `/movies/${movieId}`}>
-        Go back
-      </BackLink>
-      <h2>Movie Cast</h2>
+      <Link to={location.state?.from ?? `/movies/${movieId}`}>Go back</Link>
+      <h2>{selectedMovie?.title} - Cast</h2>
       {cast.length === 0 ? (
         <p>No information</p>
       ) : (
